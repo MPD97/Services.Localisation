@@ -26,7 +26,7 @@ namespace Services.Localisation.Infrastructure.Mongo.Queries.Handlers
    
             var locations = await documents.ToListAsync();
 
-            return locations.Select(p => Documents.Extensions.AsDto((LocationDocument) p));        
+            return locations.Select(p => p.AsDto());        
         }
     }
 }
