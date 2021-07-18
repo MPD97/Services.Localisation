@@ -9,7 +9,5 @@ namespace Services.Localisation.Core.Repositories
         Task<Location> GetAsync(Guid id);
         Task<Location> GetByUserAsync(Guid userId);
         Task AddAsync(Location location);
-        Task UpdateAsync(Location location);
-        Task DeleteAsync(Guid id);
     }
 }
