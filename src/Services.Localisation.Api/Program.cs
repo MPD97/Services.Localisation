@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Convey;
 using Convey.Logging;
 using Convey.Secrets.Vault;
@@ -10,6 +11,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Localisation.Application;
+using Services.Localisation.Application.Commands;
+using Services.Localisation.Application.DTO;
+using Services.Localisation.Application.Queries;
 using Services.Localisation.Infrastructure;
 
 namespace Services.Localisation.Api
@@ -32,7 +36,10 @@ namespace Services.Localisation.Api
                     .UseInfrastructure()
                     .UseDispatcherEndpoints(endpoints => endpoints
                         .Get("", ctx => ctx.Response.WriteAsync(ctx.RequestServices.GetService<AppOptions>().Name))
-                    ))
+                        .Get<GetLocation, LocationDto>("location/{locationId}")
+                        .Get<GetLocations, IEnumerable<LocationDto>>("location")
+                        .Post<AddLocation>("location",
+                            afterDispatch: (cmd, ctx) => ctx.Response.Created($"location/{cmd.LocationId}"))))
                 .UseLogging()
                 .UseVault();
     }
