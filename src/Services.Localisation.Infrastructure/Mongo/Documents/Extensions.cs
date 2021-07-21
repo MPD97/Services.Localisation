@@ -31,12 +31,13 @@ namespace Services.Localisation.Infrastructure.Mongo.Documents
             };
 
         public static User AsEntity(this UserDocument document)
-            => new User(document.Id);
+            => new User(document.Id, document.State);
 
         public static UserDocument AsDocument(this User entity)
             => new UserDocument
             {
-                Id = entity.Id
+                Id = entity.Id,
+                State = entity.State
             };
     }
 }
