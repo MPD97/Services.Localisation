@@ -33,9 +33,12 @@ namespace Services.Localisation.Application.Commands.Handlers
                 throw new UserNotFoundException(command.UserId);
             }
 
-            var location = new Location(command.LocationId, command.UserId, _dateTimeProvider.Now, command.Latitude, command.Longitude, command.Accuracy);
+            var location = new Location(command.LocationId, command.UserId, _dateTimeProvider.Now, command.Latitude,
+                command.Longitude, command.Accuracy);
+            
             await _locationRepository.AddAsync(location);
-            await _messageBroker.PublishAsync(new LocationAdded(command.LocationId));
+            await _messageBroker.PublishAsync(new LocationAdded(location.Id, location.UserId,
+                location.CreatedAt, location.Latitude, location.Longitude, location.Accuracy));
         }
     }
 }
