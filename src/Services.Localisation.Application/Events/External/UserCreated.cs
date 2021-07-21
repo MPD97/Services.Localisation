@@ -1,6 +1,7 @@
 ﻿using System;
 using Convey.CQRS.Events;
 using Convey.MessageBrokers;
+using Services.Localisation.Core.Entities;
 
 namespace Services.Localisation.Application.Events.External
 {
@@ -8,10 +9,12 @@ namespace Services.Localisation.Application.Events.External
     public class UserCreated: IEvent
     {
         public Guid UserId { get; }
+        public State State { get; }
 
-        public UserCreated(Guid userId)
+        public UserCreated(Guid userId, State state)
         {
             UserId = userId;
+            State = state;
         }
     }
 }

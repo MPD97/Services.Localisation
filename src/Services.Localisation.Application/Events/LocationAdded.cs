@@ -7,10 +7,20 @@ namespace Services.Localisation.Application.Events
     public class LocationAdded: IEvent
     {
         public Guid LocationId { get; }
-        
-        public LocationAdded(Guid locationId)
+        public Guid UserId { get; }  
+        public DateTime CreatedAt { get; }
+        public decimal Latitude { get; }
+        public decimal Longitude { get; }
+        public int  Accuracy { get; }
+
+        public LocationAdded(Guid locationId, Guid userId, DateTime createdAt, decimal latitude, decimal longitude, int accuracy)
         {
             LocationId = locationId;
+            UserId = userId;
+            CreatedAt = createdAt;
+            Latitude = latitude;
+            Longitude = longitude;
+            Accuracy = accuracy;
         }
     }
 }

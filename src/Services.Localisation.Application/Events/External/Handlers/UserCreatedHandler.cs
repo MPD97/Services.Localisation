@@ -22,7 +22,7 @@ namespace Services.Localisation.Application.Events.External.Handlers
                 throw new UserAlreadyExistsException(@event.UserId);
             }
 
-            await _userRepository.AddAsync(new User(@event.UserId));
+            await _userRepository.AddAsync(new User(@event.UserId, @event.State));
         }
     }
 }
