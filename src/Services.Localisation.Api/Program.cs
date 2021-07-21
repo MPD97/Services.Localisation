@@ -36,10 +36,10 @@ namespace Services.Localisation.Api
                     .UseInfrastructure()
                     .UseDispatcherEndpoints(endpoints => endpoints
                         .Get("", ctx => ctx.Response.WriteAsync(ctx.RequestServices.GetService<AppOptions>().Name))
-                        .Get<GetLocation, LocationDto>("location/{locationId}")
-                        .Get<GetLocations, IEnumerable<LocationDto>>("location")
-                        .Post<AddLocation>("location",
-                            afterDispatch: (cmd, ctx) => ctx.Response.Created($"location/{cmd.LocationId}"))))
+                        .Get<GetLocation, LocationDto>("locations/{locationId}")
+                        .Get<GetLocations, IEnumerable<LocationDto>>("locations")
+                        .Post<AddLocation>("locations",
+                            afterDispatch: (cmd, ctx) => ctx.Response.Created($"locations/{cmd.LocationId}"))))
                 .UseLogging()
                 .UseVault();
     }
