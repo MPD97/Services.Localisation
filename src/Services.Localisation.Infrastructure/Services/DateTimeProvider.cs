@@ -7,5 +7,4 @@ namespace Services.Localisation.Infrastructure.Services
     {
         public DateTime Now  => DateTime.UtcNow;
     }
-
 }

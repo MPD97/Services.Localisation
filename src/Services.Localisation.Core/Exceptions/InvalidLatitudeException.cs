@@ -12,6 +12,8 @@ namespace Services.Localisation.Core.Exceptions
         public InvalidLatitudeException(Guid userId, decimal latitude) 
             : base($"Location for user: {userId} has invalid latitude: {latitude}.")
         {
+            UserId = userId;
+            Latitude = latitude;
         }
     }
 }

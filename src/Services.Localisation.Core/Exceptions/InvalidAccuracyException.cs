@@ -12,6 +12,8 @@ namespace Services.Localisation.Core.Exceptions
         public InvalidAccuracyException(Guid userId, decimal accuracy) 
             : base($"Location for user: {userId} has invalid accuracy: {accuracy}.")
         {
+            UserId = userId;
+            Accuracy = accuracy;
         }
     }
 }
