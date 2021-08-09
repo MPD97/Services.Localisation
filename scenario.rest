@@ -1,5 +1,0 @@
-@api = http://localhost:5011
-
-### At first, get locations
-GET {{api}}/location
-Content-Type: application/json
