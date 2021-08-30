@@ -24,6 +24,7 @@ namespace Services.Localisation.Api
             => await CreateWebHostBuilder(args)
                 .Build()
                 .RunAsync();
+
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
             => WebHost.CreateDefaultBuilder(args)
                 .ConfigureServices(services => services
@@ -40,7 +41,6 @@ namespace Services.Localisation.Api
                         .Get<GetLocations, IEnumerable<LocationDto>>("locations")
                         .Post<AddLocation>("locations",
                             afterDispatch: (cmd, ctx) => ctx.Response.Created($"locations/{cmd.LocationId}"))))
-                .UseLogging()
-                .UseVault();
+                .UseLogging();
     }
 }
