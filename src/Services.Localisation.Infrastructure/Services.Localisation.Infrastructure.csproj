@@ -32,4 +32,8 @@
       <ProjectReference Include="..\Services.Localisation.Application\Services.Localisation.Application.csproj" />
     </ItemGroup>
     
+    <ItemGroup>
+      <Folder Include="Decorators" />
+    </ItemGroup>
+    
 </Project>

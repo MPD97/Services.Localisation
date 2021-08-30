@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Convey;
-using Convey.CQRS.Commands;
-using Convey.CQRS.Events;
 using Convey.CQRS.Queries;
 using Convey.Discovery.Consul;
 using Convey.Docs.Swagger;
@@ -15,10 +13,7 @@ using Convey.MessageBrokers.CQRS;
 using Convey.MessageBrokers.Outbox;
 using Convey.MessageBrokers.Outbox.Mongo;
 using Convey.MessageBrokers.RabbitMQ;
-using Convey.Metrics.AppMetrics;
 using Convey.Persistence.MongoDB;
-using Convey.Persistence.Redis;
-using Convey.Security;
 using Convey.Tracing.Jaeger;
 using Convey.Tracing.Jaeger.RabbitMQ;
 using Convey.WebApi;
@@ -34,7 +29,6 @@ using Services.Localisation.Application.Events.External;
 using Services.Localisation.Application.Services;
 using Services.Localisation.Core.Repositories;
 using Services.Localisation.Infrastructure.Contexts;
-using Services.Localisation.Infrastructure.Decorators;
 using Services.Localisation.Infrastructure.Exceptions;
 using Services.Localisation.Infrastructure.Logging;
 using Services.Localisation.Infrastructure.Mongo.Documents;
@@ -53,8 +47,6 @@ namespace Services.Localisation.Infrastructure
             builder.Services.AddTransient<ILocationRepository, LocationMongoRepository>();
             builder.Services.AddTransient<IAppContextFactory, AppContextFactory>();
             builder.Services.AddTransient(ctx => ctx.GetRequiredService<IAppContextFactory>().Create());
-            builder.Services.TryDecorate(typeof(ICommandHandler<>), typeof(OutboxCommandHandlerDecorator<>));
-            builder.Services.TryDecorate(typeof(IEventHandler<>), typeof(OutboxEventHandlerDecorator<>));
 
             return builder
                 .AddErrorHandler<ExceptionToResponseMapper>()
@@ -67,14 +59,11 @@ namespace Services.Localisation.Infrastructure
                 .AddMessageOutbox(o => o.AddMongo())
                 .AddExceptionToMessageMapper<ExceptionToMessageMapper>()
                 .AddMongo()
-                .AddRedis()
-                .AddMetrics()
                 .AddJaeger()
                 .AddHandlersLogging()
                 .AddMongoRepository<UserDocument, Guid>("users")
                 .AddMongoRepository<LocationDocument, Guid>("locations")
-                .AddWebApiSwaggerDocs()
-                .AddSecurity();
+                .AddWebApiSwaggerDocs();
         }
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
@@ -84,7 +73,6 @@ namespace Services.Localisation.Infrastructure
                 .UseJaeger()
                 .UseConvey()
                 .UsePublicContracts<ContractAttribute>()
-                .UseMetrics()
                 .UseRabbitMq()
                 .SubscribeCommand<AddLocation>()
                 .SubscribeEvent<UserCreated>();
